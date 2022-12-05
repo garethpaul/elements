@@ -2,6 +2,8 @@
   "extends": "../../tsconfig.json",
 
   "include": ["src"],
+  // ignore error
+  
 
   "exclude": ["**/__fixtures__/**", "**/__stories__/**", "**/__tests__/**"]
 }

@@ -1,4 +1,5 @@
 import { Box, Flex, Icon } from '@stoplight/mosaic';
+import { Box as PasteBox } from '@twilio-paste/core/box';
 import * as React from 'react';
 
 import { useFirstRender } from '../../hooks/useFirstRender';
@@ -123,9 +124,16 @@ const GroupItem = React.memo<{
         onLinkClick={onLinkClick}
         meta={
           item.meta ? (
-            <Box color={NODE_META_COLOR[item.meta]} textTransform="uppercase" fontWeight="medium">
+            <PasteBox
+              as="span"
+              color={NODE_META_COLOR[item.meta]}
+              textTransform="uppercase"
+              style={{
+                color: NODE_META_COLOR[item.meta],
+              }}
+            >
               {item.meta}
-            </Box>
+            </PasteBox>
           ) : (
             NODE_TYPE_META_ICON[item.type] && (
               <Flex alignItems="center">

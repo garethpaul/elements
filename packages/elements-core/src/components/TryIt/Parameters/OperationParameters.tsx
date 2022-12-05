@@ -1,4 +1,5 @@
 import { Panel } from '@stoplight/mosaic';
+import { Box } from '@twilio-paste/core/box';
 import * as React from 'react';
 
 import { ParameterSpec } from './parameter-utils';
@@ -18,7 +19,11 @@ export const OperationParameters: React.FC<OperationParametersProps> = ({
   validate,
 }) => {
   return (
-    <Panel defaultIsOpen>
+    <Box
+      style={{
+        backgroundColor: '#0d131c',
+      }}
+    >
       <Panel.Titlebar>Parameters</Panel.Titlebar>
       <Panel.Content className="sl-overflow-y-auto ParameterGrid OperationParametersContent">
         {parameters.map(parameter => (
@@ -34,6 +39,6 @@ export const OperationParameters: React.FC<OperationParametersProps> = ({
           />
         ))}
       </Panel.Content>
-    </Panel>
+    </Box>
   );
 };

@@ -2,6 +2,7 @@ import { safeStringify } from '@stoplight/json';
 import { Button, Menu, MenuItems, Panel } from '@stoplight/mosaic';
 import { CodeEditor } from '@stoplight/mosaic-code-editor';
 import { INodeExample, INodeExternalExample } from '@stoplight/types';
+import { Box } from '@twilio-paste/core/box';
 import * as React from 'react';
 
 interface RequestBodyProps {
@@ -12,7 +13,11 @@ interface RequestBodyProps {
 
 export const RequestBody: React.FC<RequestBodyProps> = ({ examples, requestBody, onChange }) => {
   return (
-    <Panel defaultIsOpen>
+    <Box
+      style={{
+        backgroundColor: '#0d131c',
+      }}
+    >
       <Panel.Titlebar
         rightComponent={
           examples.length > 1 && <ExampleMenu examples={examples} requestBody={requestBody} onChange={onChange} />
@@ -35,7 +40,7 @@ export const RequestBody: React.FC<RequestBodyProps> = ({ examples, requestBody,
           }
         />
       </Panel.Content>
-    </Panel>
+    </Box>
   );
 };
 

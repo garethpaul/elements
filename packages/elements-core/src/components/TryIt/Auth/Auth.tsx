@@ -1,5 +1,6 @@
 import { Button, Menu, MenuItems, Panel } from '@stoplight/mosaic';
 import { HttpSecurityScheme } from '@stoplight/types';
+import { Box } from '@twilio-paste/core/box';
 import { flatten } from 'lodash';
 import * as React from 'react';
 
@@ -56,7 +57,11 @@ export const TryItAuth: React.FC<TryItAuthProps> = ({ operationSecurityScheme: o
   if (filteredSecurityItems.length === 0) return null;
 
   return (
-    <Panel defaultIsOpen>
+    <Box
+      style={{
+        backgroundColor: '#0d131c',
+      }}
+    >
       <Panel.Titlebar
         rightComponent={
           filteredSecurityItems.length > 1 && (
@@ -82,7 +87,7 @@ export const TryItAuth: React.FC<TryItAuthProps> = ({ operationSecurityScheme: o
           value={(value && value.authValue) ?? ''}
         />
       }
-    </Panel>
+    </Box>
   );
 };
 

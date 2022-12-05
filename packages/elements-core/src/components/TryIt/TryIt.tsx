@@ -1,5 +1,9 @@
-import { Box, Button, HStack, Icon, Panel, useThemeIsDark } from '@stoplight/mosaic';
+import { HStack, Panel, useThemeIsDark } from '@stoplight/mosaic';
 import type { IHttpOperation, IServer } from '@stoplight/types';
+import { Box } from '@twilio-paste/box';
+import { Alert as PasteAlert } from '@twilio-paste/core/alert';
+import { Button as PasteButton } from '@twilio-paste/core/button';
+import { Text as PasteText } from '@twilio-paste/core/text';
 import { Request as HarRequest } from 'har-format';
 import { useAtom } from 'jotai';
 import * as React from 'react';
@@ -84,7 +88,7 @@ export const TryIt: React.FC<TryItProps> = ({
   const [response, setResponse] = React.useState<ResponseState | ErrorState | undefined>();
   const [requestData, setRequestData] = React.useState<HarRequest | undefined>();
 
-  const [loading, setLoading] = React.useState<boolean>(false);
+  //const [setLoading] = React.useState<boolean>(false);
   const [validateParameters, setValidateParameters] = React.useState<boolean>(false);
 
   const mediaTypeContent = httpOperation.request?.body?.contents?.[requestBodyIndex ?? 0];
@@ -180,7 +184,7 @@ export const TryIt: React.FC<TryItProps> = ({
     if (hasRequiredButEmptyParameters) return;
 
     try {
-      setLoading(true);
+      //setLoading(true);
       const mockData = isMockingEnabled ? getMockData(mockUrl, httpOperation, mockingOptions) : undefined;
       const request = await buildFetchRequest({
         parameterValues: parameterValuesWithDefaults,
@@ -217,7 +221,7 @@ export const TryIt: React.FC<TryItProps> = ({
     } catch (e: any) {
       setResponse({ error: e });
     } finally {
-      setLoading(false);
+      //setLoading(false);
     }
   };
 
@@ -261,9 +265,9 @@ export const TryIt: React.FC<TryItProps> = ({
 
       <Panel.Content className="SendButtonHolder" mt={4} pt={!isOnlySendButton && !embeddedInMd ? 0 : undefined}>
         <HStack alignItems="center" spacing={2}>
-          <Button appearance="primary" loading={loading} disabled={loading} onPress={handleSendRequest} size="sm">
-            Send API Request
-          </Button>
+          <PasteButton variant="primary" onClick={handleSendRequest}>
+            Send API Requests
+          </PasteButton>
 
           {servers.length > 1 && <ServersDropdown servers={servers} />}
 
@@ -273,9 +277,13 @@ export const TryIt: React.FC<TryItProps> = ({
         </HStack>
 
         {validateParameters && hasRequiredButEmptyParameters && (
-          <Box mt={4} color="danger-light" fontSize="sm">
-            <Icon icon={['fas', 'exclamation-triangle']} className="sl-mr-1" />
-            You didn't provide all of the required parameters!
+          // insert twilio-paste alert here
+          <Box paddingTop="space40">
+            <PasteAlert variant="warning">
+              <PasteText as="span">
+                <strong>Warning:</strong> You didn't provide all of the required parameters!
+              </PasteText>
+            </PasteAlert>
           </Box>
         )}
       </Panel.Content>
@@ -289,10 +297,10 @@ export const TryIt: React.FC<TryItProps> = ({
     tryItPanelElem = (
       <Panel isCollapsible={false} p={0} className="TryItPanel">
         <Panel.Titlebar bg="canvas-300">
-          <Box fontWeight="bold" color={!isDark ? HttpMethodColors[httpOperation.method] : undefined}>
+          <Box color={!isDark ? HttpMethodColors[httpOperation.method] : undefined}>
             {httpOperation.method.toUpperCase()}
           </Box>
-          <Box fontWeight="medium" ml={2} textOverflow="truncate" overflowX="hidden">
+          <Box textOverflow="truncate" overflowX="hidden">
             {`${chosenServer?.url || ''}${httpOperation.path}`}
           </Box>
         </Panel.Titlebar>
@@ -301,15 +309,11 @@ export const TryIt: React.FC<TryItProps> = ({
       </Panel>
     );
   } else {
-    tryItPanelElem = (
-      <Box className="TryItPanel" bg="canvas-100" rounded="lg">
-        {tryItPanelContents}
-      </Box>
-    );
+    tryItPanelElem = <Box className="TryItPanel">{tryItPanelContents}</Box>;
   }
 
   return (
-    <Box rounded="lg" overflowY="hidden">
+    <Box overflowY="hidden">
       {tryItPanelElem}
       {requestData && embeddedInMd && <RequestSamples request={requestData} embeddedInMd />}
       {response && !('error' in response) && <TryItResponse response={response} />}

@@ -45,10 +45,28 @@ const recursivelyCreateResolvedObject = (
             rootCurrentObject,
           );
         } catch (e) {
-          resolvedValue = {
-            ...value,
-            $error: e.message,
-          };
+          // if e is object is of type unknown, it will be converted to {}
+          if (isPlainObject(e)) {
+            resolvedValue = {
+              ...value,
+              $error: e,
+            };
+          } else if (typeof e === 'string') {
+            resolvedValue = {
+              ...value,
+              $error: { message: e },
+            };
+          } else if (typeof e === 'number') {
+            resolvedValue = {
+              ...value,
+              $error: { message: e.toString() },
+            };
+          } else {
+            resolvedValue = {
+              ...value,
+              $error: {},
+            };
+          }
         }
       } else {
         resolvedValue = value;
